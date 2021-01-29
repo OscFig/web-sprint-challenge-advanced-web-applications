@@ -1,13 +1,16 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import BubblePage from "./BubblePage";
+import { fetchBubbles } from '../api/fetchBubbles'
+jest.mock('../utils/fetchBubbles');
 
 test("Renders BubblePage without errors", () => {
-  // Finish this test
+  render(<BubblePage />)
 });
 
-test("Fetches data and renders the bubbles on mounting", () => {
+test("Fetches data and renders the bubbles on mounting", async () => {
   // Finish this test
+  
 });
 
 //Task List
