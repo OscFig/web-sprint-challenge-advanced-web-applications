@@ -1,17 +1,58 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
+import axiosWithAuth from '../helpers/axiosWithAuth';
+
+const initialState = {
+    username:'',
+    password:''
+  }
 
 const Login = () => {
+  const [ credentials, setCredentials ] = useState(initialState);
+  const history = useHistory();
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
+  const login = (e) => {
+    e.preventDefault();
+    axiosWithAuth().post('/api/login', credentials)
+      .then(res => {
+        console.log(res.data)//Works!!!
+        localStorage.setItem('token', res.data.payload);// This saves the token
+        history.push('/bubbles'); // Pushes you towards secret (private) route
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  const handleChange = e => {
+    setCredentials({...credentials, [e.target.name]: e.target.value})
+    // console.log('handleChange:',credentials)// Works!!!
+  }
+  // Lambda School ---- i<3Lambd4
   return (
-    <>
-      <h1>
-        Welcome to the Bubble App!
-        <p>Build a login page here</p>
-      </h1>
-    </>
+    <div>
+        <form onSubmit={login}>
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={credentials.username}
+            onChange={handleChange}
+          />
+
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+          />
+          <button>Log in</button>
+        </form>
+      </div>
   );
 };
 

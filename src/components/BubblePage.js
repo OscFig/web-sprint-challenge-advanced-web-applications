@@ -3,9 +3,21 @@ import axios from "axios";
 
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
+import axiosWithAuth from "../helpers/axiosWithAuth";
 
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
+
+  useEffect(() => {
+    axiosWithAuth().get('/api/colors')
+    .then(res => {
+      // console.log('BubblePage:',res)// Works!!!
+      setColorList(res.data);
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }, [])
 
   return (
     <>
